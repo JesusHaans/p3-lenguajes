@@ -19,20 +19,20 @@ import MinMl.Lexer
     '='         { TokEq }
     '<'         { TokLt }
     '>'         { TokGt }
-    '<='          { TokLe }
-    '>='          { TokGe }
-    '&&'          { TokAnd }
-    '||'          { TokOr }
-    true        { TokTrue }
-    false       { TokFalse }
+    '<='        { TokLe }
+    '>='        { TokGe }
+    '&&'        { TokAnd }
+    '||'        { TokOr }
+    b           { TokB $$ }
     if          { TokIf }
     then        { TokThen }
     else        { TokElse }
     let         { TokLet }
+    letrec      { TokLetRec }
     in          { TokIn }
     end         { TokEnd }
     fun         { TokFun }
-    '=>'          { TokArrow }
+    '=>'        { TokArrow }
 
 %right in
 %right '=>'
@@ -57,15 +57,19 @@ MinMl   : num                                           { Num $1 }
         | MinMl '>=' MinMl                              { Ge $1 $3 }
         | MinMl '&&' MinMl                              { And $1 $3 }
         | MinMl '||' MinMl                              { Or $1 $3 }
-        | true                                          { True }
-        | false                                         { False }
+        | b                                             { B $1 }
         | if MinMl then MinMl else MinMl end            { If $2 $4 $6 }
-        | let var '=' MinMl in MinMl end                  { Let $2 $4 $6 }
-        | fun var '=>' MinMl                              { Fun $2 $4 }
-        | MinMl MinMl                                   { App $1 $2 }
+        | let var '=' MinMl in MinMl end                { Let $2 $4 $6 }
+        | letrec var '=' MinMl in MinMl end             { LetRec $2 $4 $6 }
+        | fun var '=>' MinMl                            { Fun $2 $4 }
+        | '(' MinMl MinMl ')'                           { App $1 $2 }
         
 
 {
+
+parseError :: [Token] -> a
+parseError _ = error "Parse error"
+
 
 mainInter = getContents >>= print . parser . lexer
 
