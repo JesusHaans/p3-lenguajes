@@ -5,8 +5,9 @@ import Data.List
 data MinMl = Num Int
       | Var String
       | B Bool
+      | Sum MinMl MinMl
       | Res MinMl MinMl
-      | Mult MinMl MinMl
+      | Mul MinMl MinMl
       | Lt MinMl MinMl
       | Gt MinMl MinMl
       | Le MinMl MinMl
@@ -16,8 +17,9 @@ data MinMl = Num Int
       | Or MinMl MinMl
       | If MinMl MinMl MinMl
       | Let MinMl MinMl MinMl
-      | Letrec MinMl MinMl MinMl
+      | LetRec MinMl MinMl MinMl
       | Fun MinMl MinMl
+      | App MinMl MinMl
       deriving Show
  
 
@@ -28,7 +30,7 @@ data Token
       | TokCParen
       | TokSum
       | TokRes
-      | TokMult
+      | TokMul
       | TokLt
       | TokGt
       | TokLe
@@ -38,7 +40,7 @@ data Token
       | TokOr
       | TokB Bool
       | TokLet
-      | TokLetrec
+      | TokLetRec
       | TokIn
       | TokEnd
       | TokIf 
@@ -57,7 +59,7 @@ lexer (c:cs)
       | isDigit c = lexNum (c:cs)
 lexer ('+':cs) = TokSum : lexer cs
 lexer ('-':cs) = TokRes : lexer cs
-lexer ('*':cs) = TokMult : lexer cs
+lexer ('*':cs) = TokMul : lexer cs
 lexer ('<':'=':cs) = TokLe : lexer cs
 lexer ('>':'=':cs) = TokGe : lexer cs
 lexer ('&':'&':cs) = TokAnd : lexer cs
@@ -75,7 +77,7 @@ lexNum cs = TokNum (read num) : lexer rest
 lexVar cs =
    case span isAlpha cs of
       ("let", rest) -> TokLet : lexer rest
-      ("letrec", rest) -> TokLetrec : lexer rest
+      ("letrec", rest) -> TokLetRec : lexer rest
       ("in", rest) -> TokIn : lexer rest
       ("end", rest) -> TokEnd : lexer rest
       ("fun", rest) -> TokFun : lexer rest

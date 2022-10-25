@@ -59,9 +59,9 @@ MinMl   : num                                           { Num $1 }
         | MinMl '||' MinMl                              { Or $1 $3 }
         | b                                             { B $1 }
         | if MinMl then MinMl else MinMl end            { If $2 $4 $6 }
-        | let var '=' MinMl in MinMl end                { Let $2 $4 $6 }
-        | letrec var '=' MinMl in MinMl end             { LetRec $2 $4 $6 }
-        | fun var '=>' MinMl                            { Fun $2 $4 }
+        | let MinMl '=' MinMl in MinMl end                { Let $2 $4 $6 }
+        | letrec MinMl '=' MinMl in MinMl end             { LetRec $2 $4 $6 }
+        | fun MinMl '=>' MinMl                            { Fun $2 $4 }
         | '(' MinMl MinMl ')'                           { App $1 $2 }
         
 
