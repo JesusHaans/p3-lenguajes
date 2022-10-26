@@ -19,10 +19,10 @@ import MinMl.Lexer
     '='         { TokEq }
     '<'         { TokLt }
     '>'         { TokGt }
-    '<='          { TokLe }
-    '>='          { TokGe }
-    '&&'          { TokAnd }
-    '||'          { TokOr }
+    '<='        { TokLe }
+    '>='        { TokGe }
+    '&&'        { TokAnd }
+    '||'        { TokOr }
     true        { TokTrue }
     false       { TokFalse }
     if          { TokIf }
@@ -32,7 +32,7 @@ import MinMl.Lexer
     in          { TokIn }
     end         { TokEnd }
     fun         { TokFun }
-    '=>'          { TokArrow }
+    '=>'        { TokArrow }
 
 %right in
 %right '=>'
@@ -60,8 +60,8 @@ MinMl   : num                                           { Num $1 }
         | true                                          { True }
         | false                                         { False }
         | if MinMl then MinMl else MinMl end            { If $2 $4 $6 }
-        | let var '=' MinMl in MinMl end                  { Let $2 $4 $6 }
-        | fun var '=>' MinMl                              { Fun $2 $4 }
+        | let var '=' MinMl in MinMl end                { Let $2 $4 $6 }
+        | fun var '=>' MinMl                            { Fun $2 $4 }
         | MinMl MinMl                                   { App $1 $2 }
         
 
