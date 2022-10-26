@@ -7,10 +7,10 @@ import MinMl.Lexer as LexMl
 import MinMl.Parser as ParMl
 import MinMl.Interpreter as IntMl
 
-import MinHs.Lexer as LexHs
-import MinHs.Parser as ParHs
-import MinHs.Compiler as CompHs
-import MinHs.Interpreter as IntHs
+--import MinHs.Lexer as LexHs
+--import MinHs.Parser as ParHs
+--import MinHs.Compiler as CompHs
+--import MinHs.Interpreter as IntHs
 import Data.Bool (Bool)
 
 -- MinML
@@ -30,7 +30,7 @@ t5_ml :: Bool
 t5_ml = IntMl.eval (ParMl.parser $ LexMl.lexer "letrec lettt = fun x => if ( x < 10 ) then ( let y = x in ( y * 10) end) else ( x + ( lettt ( x - 1))) in ( lettt 12 ) end") == Left 123
 
 -- MinHS
-
+{-
 t1_hs :: Bool
 t1_hs = IntHs.eval (CompHs.curry $ ParHs.parser $ LexHs.lexer "(recfun fact :: (Nat -> Nat) x = if (x == 0) then 1 else x * (fact (x -1)) 5)") == Left 120
 
@@ -45,7 +45,7 @@ t4_hs = IntHs.eval (CompHs.curry $ ParHs.parser $ LexHs.lexer "(recfun pot :: (N
 
 t5_hs :: Bool
 t5_hs = IntHs.eval (CompHs.curry $ ParHs.parser $ LexHs.lexer "(recfun letths :: (Nat -> Nat -> Nat) x z = if ( x < 10 ) then x + let y = x in ( y * 10) end else ( (letths (x-1) (z-1)) + let y = z in ( y * 10) end ) 12 3)") == Left 159
-
+-}
 
 main = do
     putStrLn "Test MinMl"
