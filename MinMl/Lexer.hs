@@ -16,11 +16,12 @@ data MinMl = Num Int
       | And MinMl MinMl
       | Or MinMl MinMl
       | If MinMl MinMl MinMl
-      | Let MinMl MinMl MinMl
-      | LetRec MinMl MinMl MinMl
-      | Fun MinMl MinMl
+      | Let String MinMl MinMl
+      | LetRec String MinMl MinMl
+      | Fun String MinMl
       | App MinMl MinMl
-      deriving Show
+      | Fix String MinMl
+      deriving (Show,Eq)
  
 
 data Token
