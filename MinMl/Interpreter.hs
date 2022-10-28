@@ -15,13 +15,16 @@ evaln e = if e == e' then e else evaln e'
     where e' = evalg e
 
 evalg:: MinMl -> MinMl
+evalg (Num x) = Num x
+evalg (B x) = B x
+evalg (Var x)  = Var x
 evalg (If e1 e2 e3) = case evalg e1 of
     (B True) -> evalg e2
     (B False) -> evalg e3
-    e1' -> If e1' e2 e3
+    e1' -> If e1' (evalg e2) (evalg e3)
 evalg (App e1 e2) = case evalg e1 of
     (Fun x e1') -> evalg (subst e1' (x, evalg e2))
-    e1' -> App e1' e2 
+    e1' -> App e1' (evalg e2) 
 evalg (Sum e1 e2) = case (evalg e1, evalg e2) of
     (Num i1, Num i2) -> Num (i1 + i2)
     (e1', e2') -> Sum e1' e2'
