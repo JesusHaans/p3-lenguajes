@@ -51,13 +51,13 @@ evalg (Or e1 e2) = case (evalg e1, evalg e2) of
 evalg (If e1 e2 e3) = case evalg e1 of
     (B True) -> evalg e2
     (B False) -> evalg e3
-    e1' -> If e1' e2 e3
+    e1' -> If e1' (evalg e2) (evalg e3)
 evalg (App e1 e2) = case evalg e1 of
-    (Fun x e1') -> evalg (subst e1' (x, e2))
+    (Fun x e1') -> evalg (subst e1' (x, (evalg e2)))
     e1' -> App e1' (evalg e2) 
 evalg (Fun x e) = Fun x (evalg e)
-evalg (Let x e1 e2) = evalg (subst e2 (x, e1))
-evalg (LetRec f e1 e2) = evalg (subst e2 (f, Fix f e1))
+evalg (Let x e1 e2) = evalg (subst e2 (x, (evalg e1)))
+evalg (LetRec f e1 e2) = evalg (subst e2 (f, Fix f (evalg e1)))
 evalg e@(Fix id f) = evalg $ subst f (id,e)  -- -> asi tenemos que Fix f -> f (Fix f) (como en ejemplo de lab)
 
 

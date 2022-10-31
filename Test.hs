@@ -56,10 +56,10 @@ main = do
     quickCheck t5_ml
     putStrLn ""
     putStrLn "Test MinHs"
-    {-
+{-    
     quickCheck t1_hs
     quickCheck t2_hs
     quickCheck t3_hs
     quickCheck t4_hs
     quickCheck t5_hs
-    -}
+  -}
